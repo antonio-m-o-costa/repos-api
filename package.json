@@ -1,0 +1,26 @@
+{
+    "name": "repos-api",
+    "version": "1.0.0",
+    "description": "role-based access control api",
+    "main": "index.js",
+    "keywords": [
+        "user",
+        "role",
+        "auth",
+        "api"
+    ],
+    "author": "António Costa",
+    "license": "MIT",
+    "dependencies": {
+        "dotenv": "^16.0.1",
+        "express": "^4.18.1",
+        "mongoose": "^6.5.3"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.19"
+    },
+    "scripts": {
+        "start-pro": "node index.js",
+        "start-dev": "nodemon index.js"
+    }
+}
