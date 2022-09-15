@@ -36,8 +36,8 @@
         "repo" : {                          // document structure
             "_id" :         "int",          // not null     | unique | primary key
             "title" :       "string",       // not null     | unique | short ( <100 chars )
-            "description" : "string",       // not null     | long ( <=>100 chars )
-            "image" :       "string",       // can be null  | image.type ( png or jpg ) <=5MB / hashed
+            "desc" :        "string",       // not null     | long ( <=>100 chars )
+            "image" :       "string",       // can be null  | image.description ( png or jpg ) <=5MB / hashed
             "created" : {
                 "at" :      "date",         // not null     | creation date
                 "by" :      "int",          // not null     | foreign key ( user )
@@ -47,7 +47,7 @@
                 "by" :      "int",          // can be null  | foreign key ( user )
             },
             "flagged" : {
-                "type" :    "string",       // can be null  | report / delete
+                "desc" :    "string",       // can be null  | report / delete
                 "at" :      "date",         // can be null  | flagged date
                 "by" :      "int",          // can be null  | foreign key ( user )
             },
@@ -63,7 +63,7 @@
             "username" :    "string",       // not null     | unique | short ( <=15 chars )
             "password" :    "string",       // not null     | short ( <=15 chars ) hashed
             "email" :       "string",       // not null     | unique | email ( user@foo.bar ) hashed
-            "avatar" :      "string",       // can not null | image.type ( png or jpg ) / 50*50px / <=50KB / hashed
+            "avatar" :      "string",       // can not null | image.description ( png or jpg ) / 50*50px / <=50KB / hashed
             "created" :     "date",         // not null     | creation date
             "verified" :    "date",         // not null     | verification date
             "role" :        "string",       // not null     | default is *user*
@@ -72,7 +72,7 @@
                 "by" :      "int",          // can be null  | foreign key ( user )
             },
             "flagged" : {
-                "type" :    "string",       // can be null  | report / delete
+                "desc" :    "string",       // can be null  | report / delete
                 "at" :      "date",         // can be null  | flagged date
                 "by" :      "int",          // can be null  | foreign key ( user )
             },
@@ -85,7 +85,7 @@
     "roles" : {                             // collection
         "role" : {                          // document structure
             "_id" :         "int",          // not null     | unique | primary key
-            "type" :        "string",       // not null     | unique | role name
+            "description" :        "string",       // not null     | unique | role name
             "permissions" : [
                 "collection" : {            // affected collection name
                     "get":      "string",   // not null     | all / self / none
@@ -100,6 +100,6 @@
 }
 ```
 
-> note: all data can only be soft deleted thru the API with exception of custom roles created by an admin the 3 default types cannot be deleted
+> note: all data can only be soft deleted thru the API with exception of custom roles created by an admin the 3 default descriptions cannot be deleted
 
 1. database [setup](_1_database.md)

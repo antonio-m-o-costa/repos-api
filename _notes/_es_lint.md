@@ -1,6 +1,6 @@
 # es lint config
 
-create file in root `jsconfig.json`
+1. create file in root `jsconfig.json` - no more warnings
 
 ```json
 {
@@ -13,4 +13,4 @@ create file in root `jsconfig.json`
 }
 ```
 
-no more warnings
+2. regex patterns helper [here](https://regexr.com/), docs [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
