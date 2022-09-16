@@ -18,10 +18,11 @@
         "serve-favicon": "^2.5.0"
     },
     "devDependencies": {
-        "nodemon": "^2.0.19"
+        "nodemon": "^2.0.20"
     },
     "scripts": {
         "start-pro": "node index.js",
-        "start-dev": "nodemon index.js"
+        "start-dev": "nodemon index.js",
+        "seed-user": "node ./database/seeders/userSeeder.js"
     }
 }
