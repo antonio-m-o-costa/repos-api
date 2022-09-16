@@ -36,8 +36,8 @@
         "repo" : {                          // document structure
             "_id" :         "int",          // not null     | unique | primary key
             "title" :       "string",       // not null     | unique | short ( <100 chars )
-            "desc" :        "string",       // not null     | long ( <=>100 chars )
-            "image" :       "string",       // can be null  | image.description ( png or jpg ) <=5MB / hashed
+            "text" :        "string",       // not null     | long ( <=>100 chars )
+            "image" :       "string",       // can be null  | image.type ( png or jpg ) <=5MB / hashed
             "created" : {
                 "at" :      "date",         // not null     | creation date
                 "by" :      "int",          // not null     | foreign key ( user )
