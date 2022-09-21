@@ -6,13 +6,10 @@ const Schema = mongoose.Schema;
  */
 const UserModelSchema = new Schema(
     {
-        _id: {
-            type: Number,
-            index: { unique: true },
-        },
         username: {
             type: String,
             required: true,
+            index: true,
             unique: [true, 'username already registered'],
             trim: true,
             minLength: [4, 'username is too short'],
@@ -51,13 +48,14 @@ const UserModelSchema = new Schema(
                         pw
                     );
                 },
-                message: 'invalid email',
+                message: 'invalid password',
             },
         },
         email: {
             type: String,
             required: false,
             maxLength: [128, 'email is too long'],
+            index: true,
             unique: [true, 'email already registered'],
             validate: {
                 validator: function (ml) {
@@ -96,12 +94,12 @@ const UserModelSchema = new Schema(
             {
                 at: {
                     type: Date,
-                    required: false,
+                    required: true,
                 },
                 by: {
-                    type: Schema.Types.Number,
+                    type: mongoose.Schema.Types.ObjectId,
                     ref: 'User',
-                    required: false,
+                    required: true,
                 },
             },
         ],
@@ -113,12 +111,12 @@ const UserModelSchema = new Schema(
                 },
                 at: {
                     type: Date,
-                    required: false,
+                    required: true,
                 },
                 by: {
-                    type: Schema.Types.Number,
+                    type: mongoose.Schema.Types.ObjectId,
                     ref: 'User',
-                    required: false,
+                    required: true,
                 },
             },
         ],
@@ -126,18 +124,17 @@ const UserModelSchema = new Schema(
             {
                 at: {
                     type: Date,
-                    required: false,
+                    required: true,
                 },
                 by: {
-                    type: Schema.Types.Number,
+                    type: mongoose.Schema.Types.ObjectId,
                     ref: 'User',
-                    required: false,
+                    required: true,
                 },
             },
         ],
     },
     {
-        _id: false,
         collection: 'users',
     }
 );
