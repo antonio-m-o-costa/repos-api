@@ -24,12 +24,14 @@ const users = [
 ];
 
 database.once('connected', () => {
+    User.ensureIndexes(function (err) {
+        err ? logger.error(`indexers error > ${err}`) : null;
+    });
+
     users.map(async (u, index) => {
         u.save((err, result) => {
+            index != undefined ? logger.info(`user seeded > ${result}`) : null;
             err ? logger.error(`user seeding error > ${err}`) : null;
-            index === users.length - 1
-                ? logger.info(`user seeding done > ${result}`)
-                : null;
         });
     });
 });
