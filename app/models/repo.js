@@ -48,6 +48,7 @@ const RepoModelSchema = new Schema(
                 },
                 by: {
                     type: mongoose.Schema.Types.ObjectId,
+                    default: 'unknown',
                     ref: 'User',
                     required: true,
                 },
