@@ -15,11 +15,13 @@ const users = [
         username: 'Moderator',
         password: '?2Bpassword',
         email: 'mod@repos.api',
+        role: 'mod',
     }),
     new User({
         username: 'apiAdmin',
         password: 'Kl1!jadmin',
         email: 'admin@urepos.api',
+        role: 'admin',
     }),
 ];
 
