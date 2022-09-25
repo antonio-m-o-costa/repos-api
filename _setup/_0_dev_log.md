@@ -108,3 +108,4 @@
 > note: all data can only be soft deleted thru the API with exception of custom roles created by an admin the 3 default descriptions cannot be deleted
 
 1. database [setup](_1_database.md)
+2. database [seeding](_2_seeding.md)

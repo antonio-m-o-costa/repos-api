@@ -44,3 +44,5 @@ final connection string
 ```txt
 mongodb://repoUser:repoPass@127.0.0.1:27017/reposDB?authMechanism=DEFAULT&authSource=admin
 ```
+
+[back](_0_dev_log.md)
