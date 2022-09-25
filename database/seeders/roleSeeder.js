@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const Role = require('../../app/models/role');
+const Role = require('../../app/models/roleModel');
 const logger = require('../../modules/logger');
 
 const database = require('../database');

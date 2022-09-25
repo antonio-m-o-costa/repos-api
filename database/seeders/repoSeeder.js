@@ -1,9 +1,9 @@
 require('dotenv').config();
 
-const Repo = require('../../app/models/repo');
+const Repo = require('../../app/models/repoModel');
 const logger = require('../../modules/logger');
 
-const User = require('../../app/models/user');
+const User = require('../../app/models/userModel');
 
 const database = require('../database');
 

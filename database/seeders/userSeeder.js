@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const User = require('../../app/models/user');
+const User = require('../../app/models/userModel');
 const logger = require('../../modules/logger');
 
 const database = require('../database');
