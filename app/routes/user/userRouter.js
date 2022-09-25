@@ -4,15 +4,19 @@ const session = require('../../middleware/session');
 
 const {
     index,
-    create,
     read,
     update,
     remove,
+    create,
+    login,
+    logout,
 } = require('../../controllers/userController');
 
-router.route('/').get(session, index).post(create);
+router.route('/').get(index).post(create);
 
-router.route('/:id').get(read).patch(update).delete(remove);
+router.route('/:id').get(read);
+
+router.route('/:id/:action').patch(update).delete(remove);
 
 router.route('/login').post(login);
 

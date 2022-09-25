@@ -9,11 +9,11 @@ const User = require('../models/userModel');
 
 const index = async (req, res, next) => {
     try {
-        const user = await User.find();
-        logger.info('list users > ', user.join('\r\n'));
-        res.status(200).json({ status: 'success', data: user });
+        const users = await User.find();
+        logger.info(`list users: ${users}`);
+        res.status(200).json({ status: 'success', data: users });
     } catch (err) {
-        logger.error('listing users error > ', err);
+        logger.error(`listing users error: ${err}`);
         res.status(400).json({ status: 'error', message: err });
     }
 };
@@ -22,10 +22,10 @@ const read = async (req, res, next) => {
     const id = req.params.id;
     try {
         const user = await User.findById({ _id: id });
-        logger.info('read user > ', user);
+        logger.info(`read user: ${user}`);
         res.status(200).json({ status: 'success', data: user });
     } catch (err) {
-        logger.error('reading user error > ', err);
+        logger.error(`reading user error: ${err}`);
         res.status(400).json({ status: 'error', message: err });
     }
 };
@@ -34,10 +34,10 @@ const update = async (req, res, next) => {
     const id = req.params.id;
     try {
         const user = await User.findByIdAndUpdate({ _id: id }, req.body);
-        logger.info('updated user > ', user);
+        logger.info(`updated user. ${user}`);
         res.status(200).json({ status: 'success', data: user });
     } catch (err) {
-        logger.error('updating user error > ', err);
+        logger.error(`updating user error: ${err}`);
         res.status(400).json({ status: 'error', message: 'user not found' });
     }
 };
@@ -46,10 +46,10 @@ const remove = async (req, res, next) => {
     const id = req.params.id;
     try {
         await User.findByIdAndDelete({ _id: id });
-        logger.info('removed user > ', id);
+        logger.info(`removed user whit id: ${id}`);
         res.status(200).json({ status: 'success', data: id });
     } catch (err) {
-        logger.error('deleting user error > ', err);
+        logger.error(`deleting user error: ${err}`);
         res.status(400).json({ status: 'error', message: 'user not found' });
     }
 };
@@ -64,11 +64,11 @@ const create = async (req, res) => {
                 email: req.body.email,
             });
             user.save();
-            logger.info('created user > ', user);
+            logger.info(`created user ${user}`);
             res.status(200).json({ status: 'success', data: user });
         });
     } catch (err) {
-        logger.error('creating user error > ', err);
+        logger.error(`creating user error: ${err}`);
         res.status(400).json({
             status: 'error',
             message: 'could not create user',
@@ -82,7 +82,7 @@ const login = async (req, res) => {
             username: req.body.username,
         });
         if (!user) {
-            logger.error('user not found > ', user);
+            logger.error(`invalid username: ${req.body.username}`);
             res.status(400).json({
                 status: 'error',
                 message: 'invalid username provided',
@@ -103,7 +103,7 @@ const login = async (req, res) => {
                             data: user,
                         });
                     } else {
-                        logger.error('invalid password > ', user);
+                        logger.error(`invalid password: ${req.body.password}`);
                         res.status(400).json({
                             status: 'error',
                             message: 'invalid password provided',
@@ -113,7 +113,7 @@ const login = async (req, res) => {
             );
         }
     } catch (err) {
-        logger.error('login error > ', err);
+        logger.error(`login failed: ${err}`);
         res.status(400).json({
             status: 'error',
             message: 'could not login user',
@@ -122,11 +122,21 @@ const login = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-    logger.info('logout > ', req.session.user);
+    logger.info(`session destroyed: ${req.session}`);
     req.session.destroy();
     res.status(200).json({
         status: 'success',
         message: 'user logged out',
     });
     // res.redirect('/');
+};
+
+module.exports = {
+    index,
+    read,
+    update,
+    remove,
+    create,
+    login,
+    logout,
 };
