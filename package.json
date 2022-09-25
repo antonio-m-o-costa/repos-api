@@ -23,6 +23,7 @@
     "scripts": {
         "start-pro": "node index.js",
         "start-dev": "nodemon index.js",
-        "seed-user": "node ./database/seeders/userSeeder.js"
+        "seed-user": "node ./database/seeders/userSeeder.js",
+        "seed-role": "node ./database/seeders/roleSeeder.js"
     }
 }

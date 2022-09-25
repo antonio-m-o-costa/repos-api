@@ -86,13 +86,18 @@
         "role" : {                          // document structure
             "_id" :             "int",      // not null     | unique | primary key
             "scope" :           "string",   // not null     | role name (type of user)
-            "collection" : [
-                "affects"       "string",   // not null     | affected collection name
-                "permissions" : {
-                    "get":      "string",   // not null     | all / self / none
-                    "post":     "boolean",  // not null     | true / false
-                    "patch":    "string",   // not null     | all / self / none
-                    "delete":   "boolean",  // not null     | true / false
+            "actions" : [
+                {
+                    "affects" :     "string",   // not null     | affected collection name
+                    "permissions" : {
+                        "get":      "string",   // not null     | all / self / none
+                        "post":     "boolean",  // not null     | true / false
+                        "patch":    "string",   // not null     | all / self / none
+                        "delete":   "string",  // not null     | all / self / none
+                    },
+                },
+                {
+                    // ...
                 },
             ]
         }
