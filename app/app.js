@@ -22,7 +22,7 @@ let session;
 app.use(favicon('./public/images/favicon.ico'));
 
 app.use((req, res, next) => {
-    logger.info('request at: ' + req.path);
+    logger.info(`request at: ${req.path}`);
     next();
 });
 

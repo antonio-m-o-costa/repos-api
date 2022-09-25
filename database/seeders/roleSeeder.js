@@ -106,13 +106,13 @@ const roles = [
 
 database.once('connected', () => {
     Role.ensureIndexes(function (err) {
-        err ? console.error(`indexers error > ${err}`) : null;
+        err ? console.error(`indexers error: ${err}`) : null;
     });
 
     roles.map(async (r, index) => {
         r.save((err, result) => {
-            index != undefined ? logger.info(`role seeded > ${result}`) : null;
-            err ? logger.error(`role seeding error > ${err}`) : null;
+            index != undefined ? logger.info(`role seeded: ${result}`) : null;
+            err ? logger.error(`role seeding error: ${err}`) : null;
         });
     });
 });

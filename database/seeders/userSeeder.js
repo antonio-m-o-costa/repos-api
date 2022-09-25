@@ -27,13 +27,13 @@ const users = [
 
 database.once('connected', () => {
     User.ensureIndexes(function (err) {
-        err ? logger.error(`indexers error > ${err}`) : null;
+        err ? logger.error(`indexers error: ${err}`) : null;
     });
 
     users.map(async (u, index) => {
         u.save((err, result) => {
-            index != undefined ? logger.info(`user seeded > ${result}`) : null;
-            err ? logger.error(`user seeding error > ${err}`) : null;
+            index != undefined ? logger.info(`user seeded: ${result}`) : null;
+            err ? logger.error(`user seeding error: ${err}`) : null;
         });
     });
 });

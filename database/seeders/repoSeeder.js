@@ -39,13 +39,13 @@ const repos = [
 
 database.once('connected', () => {
     Repo.ensureIndexes(function (err) {
-        err ? logger.error(`indexers error > ${err}`) : null;
+        err ? logger.error(`indexers error: ${err}`) : null;
     });
 
     repos.map(async (u, index) => {
         u.save((err, result) => {
-            index != undefined ? logger.info(`repo seeded > ${result}`) : null;
-            err ? logger.error(`repo seeding error > ${err}`) : null;
+            index != undefined ? logger.info(`repo seeded: ${result}`) : null;
+            err ? logger.error(`repo seeding error: ${err}`) : null;
         });
     });
 });
