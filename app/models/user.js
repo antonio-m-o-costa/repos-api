@@ -102,6 +102,9 @@ const UserModelSchema = new Schema(
                     required: true,
                 },
             },
+            {
+                _id: false,
+            },
         ],
         flagged: [
             {
@@ -119,6 +122,9 @@ const UserModelSchema = new Schema(
                     required: true,
                 },
             },
+            {
+                _id: false,
+            },
         ],
         deleted: [
             {
@@ -131,6 +137,9 @@ const UserModelSchema = new Schema(
                     ref: 'User',
                     required: true,
                 },
+            },
+            {
+                _id: false,
             },
         ],
     },

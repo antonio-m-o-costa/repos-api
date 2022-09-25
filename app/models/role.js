@@ -9,7 +9,8 @@ const RoleModelSchema = new Schema(
         scope: {
             type: String,
             required: true,
-            index: { unique: [true, 'scope already registered'] },
+            index: true,
+            unique: [true, 'scope already registered'],
             trim: true,
             validate: {
                 validator: function (sp) {
@@ -21,7 +22,7 @@ const RoleModelSchema = new Schema(
                 message: 'invalid scope',
             },
         },
-        collection: [
+        actions: [
             {
                 affects: {
                     type: String,
@@ -42,11 +43,17 @@ const RoleModelSchema = new Schema(
                             required: true,
                         },
                         delete: {
-                            type: Boolean,
+                            type: String,
                             required: true,
                         },
                     },
+                    {
+                        _id: false,
+                    },
                 ],
+            },
+            {
+                _id: false,
             },
         ],
     },
@@ -56,3 +63,4 @@ const RoleModelSchema = new Schema(
 );
 
 var Role = mongoose.model('Role', RoleModelSchema);
+module.exports = Role;

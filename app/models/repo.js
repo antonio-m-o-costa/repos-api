@@ -37,6 +37,9 @@ const RepoModelSchema = new Schema(
                     required: true,
                 },
             },
+            {
+                _id: false,
+            },
         ],
         edited: [
             {
@@ -49,6 +52,9 @@ const RepoModelSchema = new Schema(
                     ref: 'User',
                     required: true,
                 },
+            },
+            {
+                _id: false,
             },
         ],
         flagged: [
@@ -67,6 +73,9 @@ const RepoModelSchema = new Schema(
                     required: true,
                 },
             },
+            {
+                _id: false,
+            },
         ],
         deleted: [
             {
@@ -80,6 +89,9 @@ const RepoModelSchema = new Schema(
                     required: true,
                 },
             },
+            {
+                _id: false,
+            },
         ],
     },
     {
@@ -88,3 +100,4 @@ const RepoModelSchema = new Schema(
 );
 
 var Repo = mongoose.model('Repo', RepoModelSchema);
+module.exports = Repo;
