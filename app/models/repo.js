@@ -26,6 +26,7 @@ const RepoModelSchema = new Schema(
         },
         created: [
             {
+                _id: false,
                 at: {
                     type: Date,
                     required: true,
@@ -37,12 +38,10 @@ const RepoModelSchema = new Schema(
                     required: true,
                 },
             },
-            {
-                _id: false,
-            },
         ],
         edited: [
             {
+                _id: false,
                 at: {
                     type: Date,
                     required: true,
@@ -53,12 +52,10 @@ const RepoModelSchema = new Schema(
                     required: true,
                 },
             },
-            {
-                _id: false,
-            },
         ],
         flagged: [
             {
+                _id: false,
                 desc: {
                     type: String,
                     required: true,
@@ -73,12 +70,10 @@ const RepoModelSchema = new Schema(
                     required: true,
                 },
             },
-            {
-                _id: false,
-            },
         ],
         deleted: [
             {
+                _id: false,
                 at: {
                     type: Date,
                     required: true,
@@ -88,9 +83,6 @@ const RepoModelSchema = new Schema(
                     ref: 'User',
                     required: true,
                 },
-            },
-            {
-                _id: false,
             },
         ],
     },

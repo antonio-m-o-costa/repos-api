@@ -24,12 +24,14 @@ const RoleModelSchema = new Schema(
         },
         actions: [
             {
+                _id: false,
                 affects: {
                     type: String,
                     required: true,
                 },
                 permissions: [
                     {
+                        _id: false,
                         get: {
                             type: String,
                             required: true,
@@ -47,13 +49,7 @@ const RoleModelSchema = new Schema(
                             required: true,
                         },
                     },
-                    {
-                        _id: false,
-                    },
                 ],
-            },
-            {
-                _id: false,
             },
         ],
     },

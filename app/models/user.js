@@ -92,6 +92,7 @@ const UserModelSchema = new Schema(
         },
         edited: [
             {
+                _id: false,
                 at: {
                     type: Date,
                     required: true,
@@ -102,12 +103,10 @@ const UserModelSchema = new Schema(
                     required: true,
                 },
             },
-            {
-                _id: false,
-            },
         ],
         flagged: [
             {
+                _id: false,
                 desc: {
                     type: String,
                     required: true,
@@ -122,12 +121,10 @@ const UserModelSchema = new Schema(
                     required: true,
                 },
             },
-            {
-                _id: false,
-            },
         ],
         deleted: [
             {
+                _id: false,
                 at: {
                     type: Date,
                     required: true,
@@ -137,9 +134,6 @@ const UserModelSchema = new Schema(
                     ref: 'User',
                     required: true,
                 },
-            },
-            {
-                _id: false,
             },
         ],
     },
