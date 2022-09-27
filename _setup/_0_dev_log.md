@@ -2,25 +2,16 @@
 
 ## API structure
 
-```txt
-/api                            # welcome -> redirect to auth
-    /auth                           # authentication -> response ( paths to register and login ) if valid token response equal to '/login'
-        /register                   # register new user
-        /login                      # login and auth user -> response ( paths to repos or users or roles ) based on role
-            /users              # only mod and admin can access
-                /get                # can get all users
-                /get/:id            # can get one by id
-                /post               # create user is only thru '/register'
-                /patch/:id          # users can edit self / mod can edit self and flag any / admin can edit or flag any
-                /delete/:id         # user and mod can request deletion amin can delete
-            /roles              # only admin as access
-                /get                # can get all
-                /get/:id            # can get one by id
-                /post               # can create ( roles are collection based )
-                /patch/:id          # can edit one by id
-                /delete/:id         # can delete ( if no collection is associated )
-    /*                              # redirects to '/auth'
-```
+| path                 | method | body request        | body response                                                | permissions                                   |
+| :------------------- | :----- | :------------------ | :----------------------------------------------------------- | :-------------------------------------------- |
+| `/`                  | get    | empty               | links to login or register                                   | allow all                                     |
+| `/users`             | get    | empty               | list all user / links to (get)`users/:id`                    | with session `all`                            |
+| `/users`             | post   | json{user,pass,rle} | user created / links to (get)`users/login`                   | allow all                                     |
+| `/users/:id`         | get    | empty               | user info / links to (patch) and (delete)`users/:id/:action` | `user` view only                              |
+| `/users/:id/:action` | patch  | json{data}          | user updated / links to (get)`users/:id`                     | `user` self / `mod` user update / `admin` all |
+| `/users/:id/:action` | delete | empty               | user deleted / links to (get)`users/`                        | `user` self / `mod` soft delete / `admin` all |
+| `/users/login`       | post   | json{user,pass}     | session created / links to (get)`users/`                     | allow all                                     |
+| `/users/logout`      | post   | empty               | destroy session / links to (get)`/`                          | allow all                                     |
 
 ## data structure
 
@@ -31,18 +22,10 @@
             "_id" :         "int",          // not null     | unique | primary key
             "username" :    "string",       // not null     | unique | short ( <=15 chars )
             "password" :    "string",       // not null     | short ( <=15 chars ) hashed
-            "email" :       "string",       // not null     | unique | email ( user@foo.bar ) hashed
-            "avatar" :      "string",       // can not null | image.description ( png or jpg ) / 50*50px / <=50KB / hashed
             "created" :     "date",         // not null     | creation date
-            "verified" :    "date",         // not null     | verification date
             "role" :        "string",       // not null     | default is *user*
             "edited" : {
                 "at" :      "date",         // can be null  | edition date
-                "by" :      "int",          // can be null  | foreign key ( user )
-            },
-            "flagged" : {
-                "desc" :    "string",       // can be null  | report / delete
-                "at" :      "date",         // can be null  | flagged date
                 "by" :      "int",          // can be null  | foreign key ( user )
             },
             "deleted" : {
@@ -62,7 +45,7 @@
                         "get":      "string",   // not null     | all / self / none
                         "post":     "boolean",  // not null     | true / false
                         "patch":    "string",   // not null     | all / self / none
-                        "delete":   "string",  // not null     | all / self / none
+                        "delete":   "string",   // not null     | all / self / none
                     },
                 },
                 {
