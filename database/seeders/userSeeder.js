@@ -9,19 +9,16 @@ const User = require('../../app/models/userModel');
 const users = [
     new User({
         username: 'regularUser',
-        password: bcrypt.hash('!1Apassword', 10),
-        email: 'regular@user.api',
+        password: '!1Apassword',
     }),
     new User({
         username: 'Moderator',
-        password: bcrypt.hash('?2Bpassword', 10),
-        email: 'mod@repos.api',
+        password: '?2Bpassword',
         role: 'mod',
     }),
     new User({
         username: 'apiAdmin',
-        password: bcrypt.hash('Kl1!jadmin', 10),
-        email: 'admin@urepos.api',
+        password: 'Kl1!jadmin',
         role: 'admin',
     }),
 ];
@@ -31,10 +28,15 @@ database.once('connected', () => {
         err ? logger.error(`indexers error: ${err}`) : null;
     });
 
-    users.map(async (u, index) => {
-        u.save((err, result) => {
-            index != undefined ? logger.info(`user seeded: ${result}`) : null;
-            err ? logger.error(`user seeding error: ${err}`) : null;
+    users.forEach((u, index) => {
+        bcrypt.hash(u.password, 10).then((hashed) => {
+            u.password = hashed;
+            u.save((err, result) => {
+                index != undefined
+                    ? logger.info(`user seeded: ${result}`)
+                    : null;
+                err ? logger.error(`user seeding error: ${err}`) : null;
+            });
         });
     });
 });

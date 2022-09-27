@@ -33,33 +33,17 @@ const UserModelSchema = new Schema(
             required: true,
             trim: true,
             minLength: [8, 'password is too short'],
-            maxLength: [32, 'password is too long'],
-            validate: {
-                validator: function (pw) {
-                    /**
-                     * - min 8 characters
-                     * - max 32 characters
-                     * - min 1 uppercase letter
-                     * - min 1 lowercase letter
-                     * - min 1 number
-                     * - can contain special characters
-                     */
-                    return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,32}$/.test(
-                        pw
-                    );
-                },
-                message: 'invalid password',
-            },
-        },
-        created: {
-            type: Date,
-            required: true,
-            default: Date.now,
+            maxLength: [128, 'password is too long'],
         },
         role: {
             type: String,
             required: false,
             default: 'user',
+        },
+        created: {
+            type: Date,
+            required: true,
+            default: Date.now,
         },
         edited: [
             {
