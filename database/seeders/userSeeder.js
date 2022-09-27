@@ -1,25 +1,26 @@
 require('dotenv').config();
 
-const User = require('../../app/models/userModel');
+const bcrypt = require('bcrypt');
 const logger = require('../../modules/logger');
-
 const database = require('../database');
+
+const User = require('../../app/models/userModel');
 
 const users = [
     new User({
         username: 'regularUser',
-        password: '!1Apassword',
+        password: bcrypt.hash('!1Apassword', 10),
         email: 'regular@user.api',
     }),
     new User({
         username: 'Moderator',
-        password: '?2Bpassword',
+        password: bcrypt.hash('?2Bpassword', 10),
         email: 'mod@repos.api',
         role: 'mod',
     }),
     new User({
         username: 'apiAdmin',
-        password: 'Kl1!jadmin',
+        password: bcrypt.hash('Kl1!jadmin', 10),
         email: 'admin@urepos.api',
         role: 'admin',
     }),

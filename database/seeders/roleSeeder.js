@@ -1,9 +1,9 @@
 require('dotenv').config();
 
-const Role = require('../../app/models/roleModel');
 const logger = require('../../modules/logger');
-
 const database = require('../database');
+
+const Role = require('../../app/models/roleModel');
 
 const roles = [
     new Role({
@@ -16,24 +16,6 @@ const roles = [
                     post: 'true',
                     patch: 'self',
                     delete: 'self',
-                },
-            },
-            {
-                affects: 'repos',
-                permissions: {
-                    get: 'all',
-                    post: 'true',
-                    patch: 'self',
-                    delete: 'none',
-                },
-            },
-            {
-                affects: 'roles',
-                permissions: {
-                    get: 'none',
-                    post: 'false',
-                    patch: 'none',
-                    delete: 'none',
                 },
             },
         ],
@@ -50,24 +32,6 @@ const roles = [
                     delete: 'self',
                 },
             },
-            {
-                affects: 'repos',
-                permissions: {
-                    get: 'all',
-                    post: 'true',
-                    patch: 'all',
-                    delete: 'none',
-                },
-            },
-            {
-                affects: 'roles',
-                permissions: {
-                    get: 'none',
-                    post: 'false',
-                    patch: 'none',
-                    delete: 'none',
-                },
-            },
         ],
     }),
     new Role({
@@ -75,24 +39,6 @@ const roles = [
         actions: [
             {
                 affects: 'users',
-                permissions: {
-                    get: 'all',
-                    post: 'true',
-                    patch: 'all',
-                    delete: 'all',
-                },
-            },
-            {
-                affects: 'repos',
-                permissions: {
-                    get: 'all',
-                    post: 'true',
-                    patch: 'all',
-                    delete: 'all',
-                },
-            },
-            {
-                affects: 'roles',
                 permissions: {
                     get: 'all',
                     post: 'true',

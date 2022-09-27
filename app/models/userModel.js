@@ -51,39 +51,10 @@ const UserModelSchema = new Schema(
                 message: 'invalid password',
             },
         },
-        email: {
-            type: String,
-            required: false,
-            maxLength: [128, 'email is too long'],
-            index: true,
-            unique: [true, 'email already registered'],
-            validate: {
-                validator: function (ml) {
-                    /**
-                     * - max length 128 characters
-                     * - based on crf2822 standards
-                     * - https://www.rfc-editor.org/rfc/rfc2822.txt
-                     */
-                    return /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(
-                        ml
-                    );
-                },
-                message: 'invalid email',
-            },
-        },
-        avatar: {
-            type: String,
-            required: false,
-            default: 'default.png',
-        },
         created: {
             type: Date,
             required: true,
             default: Date.now,
-        },
-        verified: {
-            type: Date,
-            required: false,
         },
         role: {
             type: String,
@@ -93,24 +64,6 @@ const UserModelSchema = new Schema(
         edited: [
             {
                 _id: false,
-                at: {
-                    type: Date,
-                    required: true,
-                },
-                by: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'User',
-                    required: true,
-                },
-            },
-        ],
-        flagged: [
-            {
-                _id: false,
-                desc: {
-                    type: String,
-                    required: true,
-                },
                 at: {
                     type: Date,
                     required: true,
