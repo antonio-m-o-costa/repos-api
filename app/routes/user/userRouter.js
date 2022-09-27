@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const session = require('../../middleware/session');
 
 const {
     index,

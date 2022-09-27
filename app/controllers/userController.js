@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const logger = require('../../modules/logger');
-const session = require('../middleware/session');
 
 const User = require('../models/userModel');
 
