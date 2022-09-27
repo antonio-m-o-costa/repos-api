@@ -21,7 +21,6 @@ created `database`, `collections`
 
 ```mongosh
 use reposDB
-db.createCollection("repos")
 db.createCollection("users")
 db.createCollection("roles")
 ```

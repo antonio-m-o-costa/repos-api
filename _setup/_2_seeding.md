@@ -14,9 +14,4 @@ npm run seed-user
 npm run seed-role
 ```
 
-3. this seeder will create 3 repos for testing purposes the `role.created.by` **_id** was set manually in the seeder file
-```bash
-npm run seed-repo
-```
-
 [back](_0_dev_log.md)
