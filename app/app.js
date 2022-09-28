@@ -1,7 +1,6 @@
 const express = require('express');
 const favicon = require('serve-favicon');
 const session = require('express-session');
-const cookie = require('cookie-parser');
 
 const url = process.env.SERVER_URL;
 const port = process.env.SERVER_PORT;
@@ -39,7 +38,7 @@ app.use((req, res, next) => {
 
 //front page
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send(req.session); // to remove later
 });
 
 //load router paths

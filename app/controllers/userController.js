@@ -59,7 +59,6 @@ const create = async (req, res) => {
             const user = await User.create({
                 username: req.body.username,
                 password: hash,
-                email: req.body.email,
             });
             user.save();
             logger.info(`created user ${user}`);
@@ -86,16 +85,18 @@ const login = async (req, res) => {
                 message: 'invalid username provided',
             });
         } else {
+            logger.info(`pass: ${user.password}`);
             bcrypt.compare(
-                user.password,
                 req.body.password,
+                user.password,
                 async (err, result) => {
                     if (result) {
-                        session = req.session;
-                        session.user.id = user._id;
-                        session.user.username = user.username;
-                        session.user.role = user.role;
-                        logger.info(`user session: ${session.user}`);
+                        req.session.user = {
+                            id: user._id.toString(),
+                            username: user.username,
+                            role: user.role,
+                        };
+                        console.log(req.session.user);
                         res.status(200).json({
                             status: 'success',
                             data: user,
