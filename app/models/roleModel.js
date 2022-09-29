@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-/**
- * @model Role model
- */
 const RoleModelSchema = new Schema(
     {
         scope: {
@@ -28,6 +25,7 @@ const RoleModelSchema = new Schema(
                 affects: {
                     type: String,
                     required: true,
+                    trim: true,
                 },
                 permissions: [
                     {
@@ -35,6 +33,7 @@ const RoleModelSchema = new Schema(
                         get: {
                             type: String,
                             required: true,
+                            trim: true,
                         },
                         post: {
                             type: Boolean,
@@ -43,10 +42,12 @@ const RoleModelSchema = new Schema(
                         patch: {
                             type: String,
                             required: true,
+                            trim: true,
                         },
                         delete: {
                             type: String,
                             required: true,
+                            trim: true,
                         },
                     },
                 ],
@@ -58,5 +59,20 @@ const RoleModelSchema = new Schema(
     }
 );
 
-var Role = mongoose.model('Role', RoleModelSchema);
+/**
+ * @model Role model
+ * ---
+ * @param {String} scope role name
+ * @param {Array} actions [affects, permissions]
+ * @param {String} affects colection name
+ * @param {Array} permissions [get, post, patch, delete]
+ * @param {String} get all, self, none
+ * @param {Bool} post true, false
+ * @param {String} patch all, self, none
+ * @param {String} delete all, self, none
+ * ---
+ * new document should be created for each scope (role)
+ * when creating new collections an actions array should be pushed to each existing role document with appropriate permissions
+ */
+const Role = mongoose.model('Role', RoleModelSchema);
 module.exports = Role;

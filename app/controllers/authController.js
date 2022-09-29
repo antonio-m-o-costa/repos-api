@@ -5,7 +5,16 @@ const User = require('../models/userModel');
 
 // TODO: update response codes
 
+/**
+ * @function [auth/login] (post) login and create session cookie
+ * ---
+ * @param {*} req [username, password]
+ * @param {*} res shows user sucess message
+ * ---
+ * soft deleted can't login
+ */
 const login = async (req, res) => {
+    // deny login for soft deleted users
     try {
         const user = await User.findOne({
             username: req.body.username,
@@ -52,7 +61,16 @@ const login = async (req, res) => {
     }
 };
 
+/**
+ * @function [auth/logout] (post) destroys session
+ * ---
+ * @param {*} req none, session must exist
+ * @param {*} res logout success message
+ * ---
+ * maybe with redirect to [/]
+ */
 const logout = async (req, res) => {
+    // check if session exists
     logger.info(`session destroyed: ${req.session}`);
     req.session.destroy();
     res.status(200).json({
