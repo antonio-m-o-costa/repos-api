@@ -5,13 +5,13 @@
 | path                 | method | body request        | body response                                                | permissions                                   |
 | :------------------- | :----- | :------------------ | :----------------------------------------------------------- | :-------------------------------------------- |
 | `/`                  | get    | empty               | links to login or register                                   | allow all                                     |
-| `/users`             | get    | empty               | list all user / links to (get)`users/:id`                    | with session `all`                            |
+| `/auth/login`        | post   | json{user,pass}     | session created / links to (get)`users/`                     | allow all                                     |
+| `/auth/logout`       | post   | empty               | destroy session / links to (get)`/`                          | allow with session `all`                      |
+| `/users`             | get    | empty               | list all user / links to (get)`users/:id`                    | allow with session `all`                      |
 | `/users`             | post   | json{user,pass,rle} | user created / links to (get)`users/login`                   | allow all                                     |
 | `/users/:id`         | get    | empty               | user info / links to (patch) and (delete)`users/:id/:action` | `user` view only                              |
 | `/users/:id/:action` | patch  | json{data}          | user updated / links to (get)`users/:id`                     | `user` self / `mod` user update / `admin` all |
 | `/users/:id/:action` | delete | empty               | user deleted / links to (get)`users/`                        | `user` self / `mod` soft delete / `admin` all |
-| `/users/login`       | post   | json{user,pass}     | session created / links to (get)`users/`                     | allow all                                     |
-| `/users/logout`      | post   | empty               | destroy session / links to (get)`/`                          | allow all                                     |
 
 ## data structure
 

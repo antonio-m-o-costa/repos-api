@@ -6,7 +6,7 @@ const url = process.env.SERVER_URL;
 const port = process.env.SERVER_PORT;
 
 const logger = require('../modules/logger');
-const router = require('./routes/router');
+const router = require('./router/router');
 
 const timer = 1000 * 60 * 60 * 12; // 12 hours
 const secret = process.env.SECRET_KEY;
