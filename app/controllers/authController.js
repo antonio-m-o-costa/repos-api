@@ -21,7 +21,7 @@ const login = async (req, res) => {
                 'deleted.0': { $exists: false },
             });
             if (!user) {
-                logger.error(`invalid username: ${req.body.username}`);
+                logger.error(`invalid username [${req.body.username}]`);
                 res.status(400).json({
                     status: 'error',
                     message: 'invalid username or password',
@@ -40,7 +40,7 @@ const login = async (req, res) => {
                             };
                             res.status(200).json({
                                 status: 'success',
-                                message: `user ${user.username} authenticated`,
+                                message: `user [${user.username}] authenticated`,
                             });
                         } else {
                             logger.error(
