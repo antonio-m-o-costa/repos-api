@@ -21,6 +21,16 @@ const users = [
         password: 'Kl1!jadmin',
         role: 'admin',
     }),
+    new User({
+        username: 'deleted',
+        password: 'deleted',
+        deleted: [
+            {
+                at: Date.now(),
+                by: '6333634f5e0e9a6e32eb1fd0',
+            },
+        ],
+    }),
 ];
 
 database.once('connected', () => {
