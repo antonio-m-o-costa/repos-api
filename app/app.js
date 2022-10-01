@@ -38,7 +38,37 @@ app.use((req, res, next) => {
 
 //front page
 app.get('/', (req, res) => {
-    res.send(req.session); // to remove later
+    if (req.session.user) {
+        res.status(200).json({
+            status: 'success',
+            message: `active user session [${req.session.user.username}] found`,
+            options: {
+                users: {
+                    path: 'http://127.0.0.1:3000/users',
+                    method: 'GET',
+                },
+                logout: {
+                    path: 'http://127.0.0.1:3000/auth/logout',
+                    method: 'POST',
+                },
+            },
+        });
+    } else {
+        res.status(200).json({
+            status: 'success',
+            message: 'welcome to repos-api',
+            options: {
+                login: {
+                    path: 'http://127.0.0.1:3000/auth/login',
+                    method: 'POST',
+                    body: {
+                        username: 'username',
+                        password: 'password',
+                    },
+                },
+            },
+        });
+    }
 });
 
 //load router paths
