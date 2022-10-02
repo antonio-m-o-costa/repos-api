@@ -56,15 +56,51 @@ const index = async (req, res) => {
 const read = async (req, res) => {
     const id = req.params.id;
     try {
-        const user = await User.findById({
-            _id: id,
-            'deleted.0': { $exists: false },
+        const user = await User.findById(
+            {
+                _id: id,
+            },
+            isAdmin(req)
+        );
+        const clean = {
+            id: user._id,
+            username: user.username,
+            role: user.role,
+            created: user.created,
+            profile: {
+                path: `${url}:${port}/users/${user._id}`,
+                method: 'GET',
+            },
+            options: {
+                edit: {
+                    path: `${url}:${port}/users/${user._id}`,
+                    method: 'PATCH',
+                    required: {
+                        body: {
+                            field: 'new data',
+                            '...': '...',
+                        },
+                        notes: 'not all fields can be edited',
+                    },
+                },
+                remove: {
+                    path: `${url}:${port}/users/${user._id}`,
+                    method: 'DELETE',
+                },
+            },
+        };
+
+        logger.info(`read user [${user}]`);
+        res.status(200).json({
+            status: 'success',
+            message: user,
         });
-        logger.info(`read user: ${user}`);
-        res.status(200).json({ status: 'success', data: user });
     } catch (err) {
-        logger.error(`reading user error: ${err}`);
-        res.status(400).json({ status: 'error', message: err });
+        logger.error(`reading user error [${err}]`);
+        res.status(400).json({
+            status: 'error',
+            message: 'user could not be found',
+        });
     }
 };
 
