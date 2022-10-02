@@ -56,12 +56,17 @@ const index = async (req, res) => {
 const read = async (req, res) => {
     const id = req.params.id;
     try {
-        const user = await User.findById(
-            {
+        const roleAdmin = isAdmin(req, true);
+        logger.warning(`session role is admin [${roleAdmin}]`);
+        let user;
+        if (roleAdmin === false) {
+            user = await User.findOne({
                 _id: id,
-            },
-            isAdmin(req)
-        );
+                'deleted.at': { $exists: false },
+            });
+        } else {
+            user = await User.findById({ _id: id });
+        }
         const clean = {
             id: user._id,
             username: user.username,
@@ -89,7 +94,6 @@ const read = async (req, res) => {
                 },
             },
         };
-
         logger.info(`read user [${user}]`);
         res.status(200).json({
             status: 'success',
@@ -179,16 +183,19 @@ const create = async (req, res) => {
 
 /**
  * check if the user is admin
+ * ---
+ * @param {Object} req checks session role
+ * @param {Boolean} bool default false
+ * ---
+ * if bool is set to true returns only true or false
  */
-const isAdmin = (req) => {
+const isAdmin = (req, bool = false) => {
     const admin = req.session.user.role == 'admin';
     logger.warning(`is admin [${admin}]`);
     if (admin) {
-        return {};
+        return !bool ? {} : true;
     } else {
-        return {
-            'deleted.at': { $exists: false },
-        };
+        return !bool ? { 'deleted.at': { $exists: false } } : false;
     }
 };
 

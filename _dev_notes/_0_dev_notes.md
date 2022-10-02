@@ -9,7 +9,7 @@
 | `/auth/logout` | post   | empty                | destroy session / links to (get)`/`                  | allow with session `all`                                               |
 | `/users`       | get    | empty                | list all user / links to (get)`users/:id`            | allow with session `all`                                               |
 | `/users`       | post   | json{user,pass,role} | user created / links to (get)`users/login`           | allow all                                                              |
-| `/users/:id`   | get    | empty                | user info / links to (patch) and (delete)`users/:id` | `user` view only                                                       |
+| `/users/:id`   | get    | empty                | user info / links to (patch) and (delete)`users/:id` | allow with session `all`                                               |
 | `/users/:id`   | patch  | json{data}           | user updated / links to (get)`users/:id`             | `user` self / `mod` user mod / `admin` all                             |
 | `/users/:id`   | delete | empty or json{hard}  | user deleted / links to (get)`users/`                | `user` soft delete / `mod` soft delete / `admin` soft or hard with key |
 
