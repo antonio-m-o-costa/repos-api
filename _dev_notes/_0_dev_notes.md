@@ -1,5 +1,7 @@
 # development notes
 
+---
+
 ## API structure
 
 | path           | method | body request         | body response                                        | permissions                                                            |
@@ -12,6 +14,8 @@
 | `/users/:id`   | get    | empty                | user info / links to (patch) and (delete)`users/:id` | allow with session `all`                                               |
 | `/users/:id`   | patch  | json{data}           | user updated / links to (get)`users/:id`             | `user` self / `mod` user mod / `admin` all                             |
 | `/users/:id`   | delete | empty or json{hard}  | user deleted / links to (get)`users/`                | `user` soft delete / `mod` soft delete / `admin` soft or hard with key |
+
+---
 
 ## data structure
 
@@ -34,35 +38,69 @@
             }
         }
     },
-    "roles" : {                             // collection
-        "role" : {                          // document structure
-            "_id" :             "int",      // not null     | unique | primary key
-            "scope" :           "string",   // not null     | role name (type of user)
-            "actions" : [
-                {
-                    "affects" :     "string",   // not null     | affected collection name
-                    "permissions" : {
-                        "get":      "string",   // not null     | all / self / none
-                        "post":     "boolean",  // not null     | true / false
-                        "patch":    "string",   // not null     | all / self / none
-                        "delete":   "string",   // not null     | all / self / none
-                    },
-                },
-                {
-                    // ...
-                },
-            ]
-        }
-    }
 }
 ```
 
 > note: users can only be soft deleted thru the API with exception for users with the admin role (in this case the admin will be required to pass additional parameters to perform an hard delete)
 
-## specific notes
+---
 
-1. database [setup](_1_database.md)
-2. database [seeding](_2_seeding.md)
+## database creation and setup
+
+installed `mongodb`, `mongo shell`, `mongo tools` and `mongo compass`
+
+| mongodb                                                              | version used |
+| :------------------------------------------------------------------- | -----------: |
+| [mongodb community](https://www.mongodb.com/try/download/community)  |       ^6.0.1 |
+| [mongosh shell](https://www.mongodb.com/try/download/shell)          |       ^1.5.4 |
+| [mongodb tools](https://www.mongodb.com/try/download/database-tools) |     ^100.6.0 |
+| [mongo compass](https://www.mongodb.com/try/download/compass)        |      ^1.32.6 |
+
+added aliases to `.bashrc` and created `Data/` and `Log/` folders for ease of use (cleaning)
+
+```bash
+# custom port - add '--port 27017'
+# log session - add '--logpath /home/user/Mongo/Log/session.log'
+alias mongo-start='mongod --auth --dbpath /home/user/Mongo/Data/'
+```
+
+created `database`, `collections`
+
+```mongosh
+use reposDB
+db.createCollection("users")
+```
+
+setup mongodb user with role to use authenticated connections
+
+```mongosh
+use admin
+db.createUser({
+    user: "repoUser",
+    pwd: "repoPass",
+    roles: [
+        { role: "readWrite", db: "reposDB" }
+    ]
+})
+```
+
+final connection string
+
+```txt
+mongodb://repoUser:repoPass@127.0.0.1:27017/reposDB?authMechanism=DEFAULT&authSource=admin
+```
+
+## database seeding
+
+to seed the database for devlopment purposes a basic seeder was created
+
+to run them use:
+
+this seeder will create 1 user of each type `user`, `mod`, `admin` and one deleted user
+
+```terminal
+npm run seed-user
+```
 
 ## other notes
 
