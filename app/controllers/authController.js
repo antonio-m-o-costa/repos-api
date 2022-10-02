@@ -27,7 +27,8 @@ const login = async (req, res) => {
                     message: 'invalid username or password',
                 });
             } else {
-                logger.info(`pass: ${user.password}`);
+                logger.info(`user ${user.username}`);
+                logger.info(`pass ${user.password}`);
                 bcrypt.compare(
                     req.body.password,
                     user.password,

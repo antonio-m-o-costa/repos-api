@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const auth = require('../../middleware/auth');
+
 const {
     index,
     read,
@@ -9,10 +11,10 @@ const {
     create,
 } = require('../../controllers/userController');
 
-router.route('/').get(index).post(create);
+router.route('/').get(auth, index).post(auth, create);
 
-router.route('/:id').get(read);
+router.route('/:id').get(auth, read);
 
-router.route('/:id/:action').patch(update).delete(remove);
+router.route('/:id').patch(auth, update).delete(auth, remove);
 
 module.exports = router;

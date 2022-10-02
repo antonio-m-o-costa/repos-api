@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const logger = require('../../modules/logger');
-const resMsg = require('../responses/commonResponses');
 
 const User = require('../models/userModel');
 
@@ -15,27 +14,26 @@ const User = require('../models/userModel');
  * admin sees soft deleted users
  */
 const index = async (req, res) => {
-    if (req.session.user) {
-        try {
-            const users = await User.find({ 'deleted.0': { $exists: false } });
-            const clean = users.map((user) => {
-                return {
-                    username: user.username,
-                    role: user.role,
-                    created: user.created,
-                };
-            });
-            logger.info(`list users [${clean}]`);
-            res.status(200).json({
-                status: 'success',
-                list: clean,
-            });
-        } catch (err) {
-            logger.error(`listing users error: ${err}`);
-            res.status(400).json({ status: 'error', message: err });
-        }
-    } else {
-        res.status(400).json(resMsg.authReqMsg());
+    try {
+        const users = await User.find({ 'deleted.0': { $exists: false } });
+        const clean = users.map((user) => {
+            return {
+                username: user.username,
+                role: user.role,
+                created: user.created,
+            };
+        });
+        logger.info(`list users [${clean}]`);
+        res.status(200).json({
+            status: 'success',
+            message: clean,
+        });
+    } catch (err) {
+        logger.error(`listing users error [${err}]`);
+        res.status(400).json({
+            status: 'error',
+            message: `error [${err}]`,
+        });
     }
 };
 
@@ -48,7 +46,6 @@ const index = async (req, res) => {
  * admin sees soft deleted users
  */
 const read = async (req, res) => {
-    // don't show soft deleted users
     const id = req.params.id;
     try {
         const user = await User.findById({
