@@ -1,3 +1,5 @@
+const env = process.env.ENVIRONMENT;
+
 /**
  * logger prints to console
  * @options .info .error .warning
@@ -5,13 +7,13 @@
  */
 const logger = {
     info: (message) => {
-        console.log(`info > ${message}`);
+        env == 'dev' ? console.log(`info > ${message}`) : null;
     },
     error: (message) => {
-        console.error(`error > ${message}`);
+        env == 'dev' ? console.error(`error > ${message}`) : null;
     },
     warning: (message) => {
-        console.warn(`warning > ${message}`);
+        env == 'dev' ? console.warn(`warning > ${message}`) : null;
     },
 };
 
