@@ -32,11 +32,13 @@ app.use(favicon('./public/images/favicon.ico'));
 
 app.use((req, res, next) => {
     logger.info(`request at: ${req.path}`);
-    // console.log(req.session.cookie);
     next();
 });
 
-//front page
+/**
+ * API root checks for session
+ * shows message according to session status
+ */
 app.get('/', (req, res) => {
     if (req.session.user) {
         res.status(200).json({
@@ -44,11 +46,11 @@ app.get('/', (req, res) => {
             message: `active user session [${req.session.user.username}] found`,
             options: {
                 users: {
-                    path: 'http://127.0.0.1:3000/users',
+                    path: `${url}:${port}/users`,
                     method: 'GET',
                 },
                 logout: {
-                    path: 'http://127.0.0.1:3000/auth/logout',
+                    path: `${url}:${port}/auth/logout`,
                     method: 'POST',
                 },
             },
@@ -59,7 +61,7 @@ app.get('/', (req, res) => {
             message: 'welcome to repos-api',
             options: {
                 login: {
-                    path: 'http://127.0.0.1:3000/auth/login',
+                    path: `${url}:${port}/auth/login`,
                     method: 'POST',
                     body: {
                         username: 'username',
