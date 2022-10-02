@@ -31,7 +31,7 @@ app.use(
 app.use(favicon('./public/images/favicon.ico'));
 
 app.use((req, res, next) => {
-    logger.info(`request at: ${req.path}`);
+    logger.info(`request at [${req.path}]`);
     next();
 });
 
@@ -77,7 +77,7 @@ app.get('/', (req, res) => {
 app.use('/', router);
 
 app.listen(port, () => {
-    logger.info(`server running at: ${url}:${port}`);
+    logger.info(`server running at [${url}:${port}]`);
 });
 
 module.exports = app;

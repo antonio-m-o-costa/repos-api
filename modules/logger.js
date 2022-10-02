@@ -7,13 +7,13 @@ const env = process.env.ENVIRONMENT;
  */
 const logger = {
     info: (message) => {
-        env == 'dev' ? console.log(`info > ${message}`) : null;
+        env == 'dev' ? console.log(`INFO >> ${message}`) : null;
     },
     error: (message) => {
-        env == 'dev' ? console.error(`error > ${message}`) : null;
+        env == 'dev' ? console.error(`ERROR >> ${message}`) : null;
     },
     warning: (message) => {
-        env == 'dev' ? console.warn(`warning > ${message}`) : null;
+        env == 'dev' ? console.warn(`WARNING >> ${message}`) : null;
     },
 };
 

@@ -27,8 +27,7 @@ const login = async (req, res) => {
                     message: 'invalid username or password',
                 });
             } else {
-                logger.info(`user ${user.username}`);
-                logger.info(`pass ${user.password}`);
+                logger.info(`user [${user.username}] pass [${user.password}]`);
                 bcrypt.compare(
                     req.body.password,
                     user.password,
@@ -45,7 +44,7 @@ const login = async (req, res) => {
                             });
                         } else {
                             logger.error(
-                                `invalid password: ${req.body.password}`
+                                `invalid password [${req.body.password}]`
                             );
                             res.status(400).json({
                                 status: 'error',
@@ -56,7 +55,7 @@ const login = async (req, res) => {
                 );
             }
         } catch (err) {
-            logger.error(`login failed: ${err}`);
+            logger.error(`login failed [${err}]`);
             res.status(400).json({
                 status: 'error',
                 message: 'something went very wrong',

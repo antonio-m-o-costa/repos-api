@@ -14,10 +14,10 @@ mongoose.connect(connection);
  */
 const database = mongoose.connection
     .on('error', (error) => {
-        logger.error(`database connection error: ${error}`);
+        logger.error(`database connection error [${error}]`);
     })
     .once('connected', () => {
-        logger.info(`database connection on: ${connection}`);
+        logger.info(`database connection on [${connection}]`);
     });
 
 module.exports = database;
