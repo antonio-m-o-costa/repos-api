@@ -14,11 +14,17 @@ const User = require('../models/userModel');
  * soft deleted can't login
  */
 const login = async (req, res) => {
+    if (req.session.user) {
+        logger.warning(
+            `previous session destroyed [${req.session.user.username}]`
+        );
+        req.session.user = {};
+    }
     if (req.body.username || req.body.password) {
         try {
             const user = await User.findOne({
                 username: req.body.username,
-                'deleted.0': { $exists: false },
+                'deleted.at': { $exists: false },
             });
             if (!user) {
                 logger.error(`invalid username [${req.body.username}]`);
