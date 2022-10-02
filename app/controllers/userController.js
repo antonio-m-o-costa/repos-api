@@ -1,3 +1,6 @@
+const url = process.env.SERVER_URL;
+const port = process.env.SERVER_PORT;
+
 const bcrypt = require('bcrypt');
 const logger = require('../../modules/logger');
 
@@ -15,12 +18,17 @@ const User = require('../models/userModel');
  */
 const index = async (req, res) => {
     try {
-        const users = await User.find({ 'deleted.0': { $exists: false } });
+        const users = await User.find(isAdmin(req));
         const clean = users.map((user) => {
             return {
+                id: user._id,
                 username: user.username,
                 role: user.role,
                 created: user.created,
+                profile: {
+                    path: `${url}:${port}/users/${user._id}`,
+                    method: 'GET',
+                },
             };
         });
         logger.info(`list users [${clean}]`);
@@ -32,7 +40,7 @@ const index = async (req, res) => {
         logger.error(`listing users error [${err}]`);
         res.status(400).json({
             status: 'error',
-            message: `error [${err}]`,
+            message: `error fetching users`,
         });
     }
 };
@@ -130,6 +138,21 @@ const create = async (req, res) => {
             status: 'error',
             message: 'could not create user',
         });
+    }
+};
+
+/**
+ * check if the user is admin
+ */
+const isAdmin = (req) => {
+    const admin = req.session.user.role == 'admin';
+    logger.warning(`is admin [${admin}]`);
+    if (admin) {
+        return {};
+    } else {
+        return {
+            'deleted.at': { $exists: false },
+        };
     }
 };
 
