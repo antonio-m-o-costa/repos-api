@@ -11,7 +11,7 @@ const {
     create,
 } = require('../../controllers/userController');
 
-router.route('/').get(auth, index).post(auth, create);
+router.route('/').get(auth, index).post(create);
 
 router.route('/:id').get(auth, read);
 

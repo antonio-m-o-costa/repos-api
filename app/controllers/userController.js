@@ -160,29 +160,54 @@ const remove = async (req, res, next) => {
  * admin can create users with roles
  */
 const create = async (req, res) => {
-    // only admin session can create users with roles
+    let role = 'user';
+    if (req.session.user) {
+        const roleAllowed = isAdmin(req, true);
+        if (roleAllowed && req.body.role) role = req.body.role;
+    }
     const password = req.body.password;
-    try {
-        bcrypt.hash(password, 10, async (err, hash) => {
-            const user = await User.create({
+    bcrypt.hash(password, 10, async (err, hash) => {
+        const user = await User.create(
+            {
                 username: req.body.username,
                 password: hash,
-            });
-            user.save();
-            logger.info(`created user ${user}`);
-            res.status(200).json({ status: 'success', data: user });
-        });
-    } catch (err) {
-        logger.error(`creating user error: ${err}`);
-        res.status(400).json({
-            status: 'error',
-            message: 'could not create user',
-        });
-    }
+                role: role,
+            },
+            (err, result) => {
+                if (err) {
+                    console.log(err);
+                    let msg;
+                    if (err.code === 11000) msg = 'user already exists';
+                    else msg = err.errors.username.message;
+                    logger.error(`creating user error [${err}]`);
+                    res.status(400).json({
+                        status: 'error',
+                        message: msg,
+                    });
+                } else {
+                    logger.info(`created user [${req.body.username}]`);
+                    res.status(200).json({
+                        status: 'success',
+                        message: `user created [${req.body.username}] successfully`,
+                        options: {
+                            login: {
+                                path: `${url}:${port}/auth/login`,
+                                method: 'POST',
+                                body: {
+                                    username: 'username',
+                                    password: 'password',
+                                },
+                            },
+                        },
+                    });
+                }
+            }
+        );
+    });
 };
 
 /**
- * check if the user is admin
+ * @function isAdmin check if the user is admin
  * ---
  * @param {Object} req checks session role
  * @param {Boolean} bool default false
