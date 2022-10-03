@@ -22,8 +22,18 @@ const users = [
         role: 'admin',
     }),
     new User({
-        username: 'deleted',
-        password: 'deleted',
+        username: 'deletedUser',
+        password: 'deletedPass',
+        deleted: [
+            {
+                at: Date.now(),
+                by: '6333634f5e0e9a6e32eb1fd0',
+            },
+        ],
+    }),
+    new User({
+        username: 'userToEdit',
+        password: 'editThisUser',
         deleted: [
             {
                 at: Date.now(),
