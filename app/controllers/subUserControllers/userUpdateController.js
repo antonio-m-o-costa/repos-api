@@ -26,6 +26,13 @@ const update = async (req, res) => {
         _id: id,
         'deleted.at': { $exists: false },
     });
+    if (userToEdit == null) {
+        logger.error(`user ${id} not found`);
+        return res.status(500).send({
+            status: 'error',
+            message: `user ${id} not found`,
+        });
+    }
     logger.info(`user to update ${userToEdit}`);
     switch (activeUser.role) {
         case 'user':
