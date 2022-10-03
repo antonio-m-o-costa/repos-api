@@ -12,18 +12,18 @@ const User = require('../models/userModel');
  */
 const auth = async (req, res, next) => {
     const session = req.session.user;
-    if (session.id) {
+    if (session) {
         logger.info(`session checker ${session}`);
         try {
             const user = await User.findById({
                 _id: session.id,
                 'deleted.at': { $exists: false },
             });
-            logger.info(`found user [${user.username}]`);
+            logger.info(`found user ${user.username}`);
             user.username ? next() : null;
         } catch (err) {
             req.session.destroy();
-            logger.error(`reading session error [${err}]`);
+            logger.error(`reading session error ${err}`);
             res.status(400).json({
                 status: 'error',
                 message: 'session error',
