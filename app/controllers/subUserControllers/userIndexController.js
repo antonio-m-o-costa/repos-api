@@ -1,9 +1,9 @@
 const url = process.env.SERVER_URL;
 const port = process.env.SERVER_PORT;
 
-const logger = require('../../modules/logger');
+const logger = require('../../../modules/logger');
 
-const User = require('../models/userModel');
+const User = require('../../models/userModel');
 
 // TODO: update response codes
 
