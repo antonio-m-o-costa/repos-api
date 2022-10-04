@@ -18,6 +18,7 @@ Node.js Express.js mongoose.js API with role-based access control
         - [Steps](#steps)
         - [Environment variables](#environment-variables)
     - [Dependencies Used](#dependencies-used)
+    - [Testing This API/Project](#testing-this-apiproject)
 
 ## Description
 
@@ -204,6 +205,16 @@ is going to be running
 stricter security the favicon serving will trow an `Cross-Origin Error` and block
 the favicon from loading except in the API root more
 [Info](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS).
+
+---
+
+## Testing This API/Project
+
+To test this project a few things were created:
+
+- Thunder Client collection [file](./_api_testing/repos-testing-thunder/thunder-collection_thunder-repos-api.json)
+- Insomnia document [file](./_api_testing/repos-testing-insomnia/Insomnia-All_2022-10-04.json)
+- Exported database collection [file](./_api_testing/_db_export/users_collection_export.json)
 
 ---
 
