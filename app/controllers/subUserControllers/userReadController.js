@@ -5,8 +5,6 @@ const logger = require('../../../modules/logger');
 
 const User = require('../../models/userModel');
 
-// TODO: update response codes
-
 /**
  * @function [users/:id] (get) show user by id (exclude soft deleted)
  * ---
@@ -17,10 +15,14 @@ const User = require('../../models/userModel');
  */
 const read = async (req, res) => {
     const id = req.params.id;
+
     try {
         const roleAdmin = req.session.user.role == 'admin';
+
         logger.warning(`session role is admin ${roleAdmin}`);
+
         let user;
+
         if (roleAdmin === false) {
             user = await User.findOne({
                 _id: id,
@@ -29,6 +31,7 @@ const read = async (req, res) => {
         } else {
             user = await User.findById({ _id: id });
         }
+
         const clean = {
             id: user._id,
             username: user.username,
@@ -56,14 +59,17 @@ const read = async (req, res) => {
                 },
             },
         };
+
         logger.info(`read user ${user}`);
+
         res.status(200).json({
             status: 'success',
             message: clean,
         });
     } catch (err) {
         logger.error(`reading user error ${err}`);
-        res.status(400).json({
+
+        res.status(404).json({
             status: 'error',
             message: 'user could not be found',
         });

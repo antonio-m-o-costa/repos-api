@@ -6,8 +6,6 @@ const logger = require('../../../modules/logger');
 
 const User = require('../../models/userModel');
 
-// TODO: update response codes
-
 /**
  * @function [users/:id] (patch) update user by id (soft deleted can be edited by admin)
  * ---
@@ -21,23 +19,25 @@ const User = require('../../models/userModel');
 const update = async (req, res) => {
     const id = req.params.id;
     const activeUser = req.session.user;
+
     logger.info(`data to update ${req.body}`);
-    const userToEdit = await User.findOne({
-        _id: id,
-        'deleted.at': { $exists: false },
-    });
-    if (userToEdit == null) {
+
+    const userToEdit = await User.findOne({ c_id: id });
+
+    if (userToEdit != null && userToEdit.deleted.at == null) {
         logger.error(`user ${id} not found`);
-        return res.status(500).send({
+        return res.status(404).send({
             status: 'error',
             message: `user ${id} not found`,
         });
     }
+
     logger.info(`user to update ${userToEdit}`);
+
     switch (activeUser.role) {
         case 'user':
-            if (activeUser.id != userToEdit._id || req.body.role) {
-                res.status(400).json({
+            if (activeUser.id != id || req.body.role) {
+                res.status(403).json({
                     status: 'error',
                     message:
                         'you can only edit yourself, you can not change your role',
@@ -47,8 +47,11 @@ const update = async (req, res) => {
             }
             break;
         case 'mod':
-            if (userToEdit.role == 'admin' || req.body.role) {
-                res.status(400).json({
+            if (
+                (userToEdit != null && userToEdit.role == 'admin') ||
+                req.body.role
+            ) {
+                res.status(403).json({
                     status: 'error',
                     message:
                         'you can not edit admin users, you can not change user roles',
@@ -61,7 +64,7 @@ const update = async (req, res) => {
             updateUser();
             break;
         default:
-            res.status(400).json({
+            res.status(500).json({
                 status: 'error',
                 message: 'something went very wrong',
                 contact: 'suport@example.com',
@@ -71,6 +74,7 @@ const update = async (req, res) => {
 
     function updateUser() {
         const password = req.body.password;
+
         bcrypt.hash(password, 10, async (err, hash) => {
             const updatedUser = User.findOneAndUpdate(
                 { _id: id },
@@ -88,15 +92,19 @@ const update = async (req, res) => {
                 (err, result) => {
                     if (err) {
                         let msg;
+
                         if (err.code === 11000) msg = 'user already exists';
                         else msg = err.errors.username.message;
+
                         logger.error(`updating user error ${err}`);
+
                         res.status(400).json({
                             status: 'error',
                             message: msg,
                         });
                     } else if (result) {
                         logger.info(`updated user to ${updatedUser}`);
+
                         res.status(200).json({
                             status: 'success',
                             message: `user updated [${result.username}] successfully`,

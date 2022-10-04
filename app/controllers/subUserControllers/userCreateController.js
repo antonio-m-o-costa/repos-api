@@ -6,8 +6,6 @@ const logger = require('../../../modules/logger');
 
 const User = require('../../models/userModel');
 
-// TODO: update response codes
-
 /**
  * @function [users/] (post) create new users
  * ---
@@ -18,11 +16,14 @@ const User = require('../../models/userModel');
  */
 const create = async (req, res) => {
     let role = 'user';
+
     if (req.session.user) {
         const roleAllowed = req.session.user.role == 'admin';
         if (roleAllowed && req.body.role) role = req.body.role;
     }
+
     const password = req.body.password;
+
     bcrypt.hash(password, 10, async (err, hash) => {
         const user = await User.create(
             {
@@ -32,18 +33,21 @@ const create = async (req, res) => {
             },
             (err, result) => {
                 if (err) {
-                    console.log(err);
                     let msg;
+
                     if (err.code === 11000) msg = 'user already exists';
                     else msg = err.errors.username.message;
+
                     logger.error(`creating user error ${err}`);
+
                     res.status(400).json({
                         status: 'error',
-                        message: msg,
+                        message: `error creating user ${msg}`,
                     });
                 } else {
                     logger.info(`created user ${req.body.username}`);
-                    res.status(200).json({
+
+                    res.status(201).json({
                         status: 'success',
                         message: `user created [${req.body.username}] successfully`,
                         options: {

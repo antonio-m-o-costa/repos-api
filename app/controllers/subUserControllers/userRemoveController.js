@@ -6,8 +6,6 @@ const logger = require('../../../modules/logger');
 
 const User = require('../../models/userModel');
 
-// TODO: update response codes
-
 /**
  * @function [users/:id] (delete) delete user
  * ---
@@ -19,23 +17,23 @@ const User = require('../../models/userModel');
 const remove = async (req, res, next) => {
     const id = req.params.id;
     const activeUser = req.session.user;
-    const userToDelete = await User.findOne({
-        _id: id,
-        'deleted.at': { $exists: false },
-    });
-    console.log(userToDelete);
-    if (userToDelete == null) {
+
+    const userToDelete = await User.findOne({ _id: id });
+
+    if (userToDelete != null && userToDelete.deleted.at == null) {
         logger.error(`user ${id} not found`);
-        return res.status(500).send({
+        return res.status(404).send({
             status: 'error',
             message: `user ${id} not found`,
         });
     }
+
     logger.info(`user to delete ${userToDelete}`);
+
     switch (activeUser.role) {
         case 'user':
-            if (activeUser.id != userToDelete._id) {
-                res.status(400).json({
+            if (activeUser.id != id) {
+                res.status(403).json({
                     status: 'error',
                     message: 'you can only delete yourself',
                 });
@@ -44,8 +42,8 @@ const remove = async (req, res, next) => {
             }
             break;
         case 'mod':
-            if (userToDelete.role == 'admin') {
-                res.status(400).json({
+            if (userToDelete != null && userToDelete.role == 'admin') {
+                res.status(403).json({
                     status: 'error',
                     message: 'you can not delete admin users',
                 });
@@ -54,19 +52,18 @@ const remove = async (req, res, next) => {
             }
             break;
         case 'admin':
-            console.log(req.body.key == hardKey);
             if (req.body.key == hardKey) {
                 const hardDelete = User.findOneAndDelete(id, (err, result) => {
                     if (err) {
                         logger.error(`deleting error ${err}`);
-                        res.status(400).json({
+                        res.status(404).json({
                             status: 'error',
                             message: 'user could not be deleted',
                         });
                     } else if (result) {
                         res.status(200).json({
                             status: 'success',
-                            message: `user [${hardDelete.username}] deleted`,
+                            message: `user [${result.username}] deleted successfully`,
                         });
                     }
                 });
@@ -75,7 +72,7 @@ const remove = async (req, res, next) => {
             }
             break;
         default:
-            res.status(400).json({
+            res.status(500).json({
                 status: 'error',
                 message: 'something went very wrong',
                 contact: 'suport@example.com',
@@ -96,15 +93,17 @@ const remove = async (req, res, next) => {
             (err, result) => {
                 if (err) {
                     logger.error(`deleting user error ${err}`);
-                    res.status(400).json({
+
+                    res.status(404).json({
                         status: 'error',
                         message: 'user could not be deleted',
                     });
                 } else if (result) {
                     logger.info(`deleted user to ${deletedUser}`);
+
                     res.status(200).json({
                         status: 'success',
-                        message: `user deleted [${result.username}] successfully`,
+                        message: `user [${result.username}] deleted successfully`,
                         options: {
                             users: {
                                 path: `${url}:${port}/users`,

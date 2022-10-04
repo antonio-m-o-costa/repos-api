@@ -3,8 +3,6 @@ const logger = require('../../modules/logger');
 
 const User = require('../models/userModel');
 
-// TODO: update response codes
-
 /**
  * @function [auth/login] (post) login and create session cookie
  * ---
@@ -18,25 +16,31 @@ const login = async (req, res) => {
         logger.warning(
             `previous session destroyed [${req.session.user.username}]`
         );
+
         req.session.user = {};
     }
+
     if (req.body.username || req.body.password) {
         try {
             const user = await User.findOne({
                 username: req.body.username,
                 'deleted.at': { $exists: false },
             });
+
             if (!user) {
                 logger.error(`invalid username [${req.body.username}]`);
-                res.status(400).json({
+
+                res.status(404).json({
                     status: 'error',
                     message: 'invalid username or password',
                 });
             } else {
                 logger.info(`user [${user.username}] pass [${user.password}]`);
+
                 bcrypt.compare(
                     req.body.password,
                     user.password,
+
                     async (err, result) => {
                         if (result) {
                             req.session.user = {
@@ -52,7 +56,8 @@ const login = async (req, res) => {
                             logger.error(
                                 `invalid password [${req.body.password}]`
                             );
-                            res.status(400).json({
+
+                            res.status(404).json({
                                 status: 'error',
                                 message: 'invalid username or password',
                             });
@@ -62,7 +67,8 @@ const login = async (req, res) => {
             }
         } catch (err) {
             logger.error(`login failed [${err}]`);
-            res.status(400).json({
+
+            res.status(500).json({
                 status: 'error',
                 message: 'something went very wrong',
                 contact: 'suport@example.com',
@@ -70,7 +76,8 @@ const login = async (req, res) => {
         }
     } else {
         logger.error('no login data');
-        res.status(400).json({
+
+        res.status(401).json({
             status: 'error',
             message: 'no authentication credentials',
             expected: {

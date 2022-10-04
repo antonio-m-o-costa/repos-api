@@ -5,8 +5,6 @@ const logger = require('../../../modules/logger');
 
 const User = require('../../models/userModel');
 
-// TODO: update response codes
-
 /**
  * @function [users/] (get) index list all users (soft deleted excluded)
  * ---
@@ -18,6 +16,7 @@ const User = require('../../models/userModel');
 const index = async (req, res) => {
     try {
         const users = await User.find(isAdmin(req));
+
         const clean = users.map((user) => {
             return {
                 id: user._id,
@@ -31,13 +30,15 @@ const index = async (req, res) => {
             };
         });
         logger.info(`list users ${clean}`);
+
         res.status(200).json({
             status: 'success',
             message: clean,
         });
     } catch (err) {
         logger.error(`listing users error ${err}`);
-        res.status(400).json({
+
+        res.status(404).json({
             status: 'error',
             message: `error fetching users`,
         });
@@ -54,7 +55,9 @@ const index = async (req, res) => {
  */
 const isAdmin = (req, bool = false) => {
     const admin = req.session.user.role == 'admin';
+
     logger.warning(`is admin ${admin}`);
+
     if (admin) {
         return !bool ? {} : true;
     } else {

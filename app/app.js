@@ -73,9 +73,10 @@ app.get('/', (req, res) => {
     }
 });
 
-//load router paths
+// load router paths
 app.use('/', router);
 
+// log all request routes
 app.listen(port, () => {
     logger.info(`server running at [${url}:${port}]`);
 });

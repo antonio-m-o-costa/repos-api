@@ -24,13 +24,13 @@ const auth = async (req, res, next) => {
         } catch (err) {
             req.session.destroy();
             logger.error(`reading session error ${err}`);
-            res.status(400).json({
+            res.status(409).json({
                 status: 'error',
                 message: 'session error',
             });
         }
     } else {
-        return res.status(400).json({
+        return res.status(401).json({
             status: 'error',
             message: 'authentication required',
             options: {
