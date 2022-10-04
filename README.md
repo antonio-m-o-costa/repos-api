@@ -144,10 +144,10 @@ mongodb://repoUser:repoPass@127.0.0.1:27017/reposDB?authMechanism=DEFAULT&authSo
 
 ### Initial requirements
 
-| Software | Version  | Why                                                                      |
-| :------- | :------- | :----------------------------------------------------------------------- |
-| Node.js  | ^16.17.1 | JavaScript runtime environment - Required to run the project             |
-| npm      | ^8.15.0  | Include with Node.js - Required to install libraries used by the project |
+| Software                       | Version  | Why                                                                      |
+| :----------------------------- | :------- | :----------------------------------------------------------------------- |
+| [Node.js](https://nodejs.org/) | ^16.17.1 | JavaScript runtime environment - Required to run the project             |
+| npm                            | ^8.15.0  | Include with Node.js - Required to install libraries used by the project |
 
 ### Steps
 
